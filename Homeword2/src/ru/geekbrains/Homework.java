@@ -28,11 +28,35 @@ public class Homework {
         System.out.println("Результаты выполнения задания 3:\t" + Arrays.toString(mass));
     }
 
+    private static void z4() {
+        byte[][] mass = new byte[5][5];
+        System.out.println("Исходные данные задания 4:");
+        printMass(mass);
+
+        for (int i = 0, j = 0; i < mass.length; i++, j++)
+            mass[i][j] = 1;
+        for (int i = 0, j = mass.length - 1; i < mass.length; i++, j--)
+            mass[i][j] = 1;
+
+        System.out.println("Результаты выполнения задания 4:");
+        printMass(mass);
+    }
+
+    private static void printMass(byte[][] mass) {
+        for (int i = 0; i < mass.length; i++) {
+            for (int j = 0; j < mass[i].length; j++)
+                System.out.print(mass[i][j] + "\t");
+            System.out.println();
+        }
+    }
+
     public static void main(String[] args) {
         z1();
         System.out.println();
         z2();
         System.out.println();
         z3();
+        System.out.println();
+        z4();
     }
 }
