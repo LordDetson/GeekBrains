@@ -14,6 +14,11 @@ public class Homework {
         return a * (b + (c / d));
     }
 
+    private static boolean checkSum(double a, double b) {
+        double sum = a + b;
+        return sum >= 10 && sum <= 20;
+    }
+
     public static void main(String[] args) {
 
     }
