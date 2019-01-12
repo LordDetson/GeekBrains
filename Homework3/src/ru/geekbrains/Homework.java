@@ -38,7 +38,34 @@ public class Homework {
         } while (isExit == 1);
     }
 
+    private static void gameGuessTheWord() {
+        String[] words = {"apple", "orange", "lemon", "banana", "apricot", "avocado", "broccoli", "carrot",
+                "cherry", "garlic", "grape", "melon", "leak", "kiwi", "mango", "mushroom", "nut", "olive", "pea",
+                "peanut", "pear", "pepper", "pineapple", "pumpkin", "potato"};
+        Random random = new Random();
+        Scanner scanner = new Scanner(System.in);
+        String hiddenWord = words[random.nextInt(words.length)];
+        String word = "";
+        do {
+            System.out.println("Введите слово");
+            System.out.print(">> ");
+            if (scanner.hasNextLine())
+                word = scanner.nextLine();
+            char[] charsInHiddenWord = hiddenWord.toCharArray();
+            char[] charsInWord = word.toCharArray();
+            int length = charsInHiddenWord.length < charsInWord.length ? charsInHiddenWord.length : charsInWord.length;
+            for (int i = 0; i < 15; i++)
+                if (i < length && charsInHiddenWord[i] == charsInWord[i])
+                    System.out.print(charsInHiddenWord[i]);
+                else
+                    System.out.print('*');
+            System.out.println();
+        } while (!hiddenWord.equals(word));
+        System.out.println("Загаданное слово: " + hiddenWord);
+    }
+
     public static void main(String[] args) {
-        gameGuessTheNumber();
+        //gameGuessTheNumber();
+        gameGuessTheWord();
     }
 }
