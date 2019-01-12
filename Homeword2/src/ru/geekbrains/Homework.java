@@ -11,7 +11,16 @@ public class Homework {
         System.out.println("Результаты выполнения задания 1:\t" + Arrays.toString(mass));
     }
 
-    public static void main(String[] args) {
+    private static void z2() {
+        byte[] mass = new byte[8];
+        System.out.println("Исходные данные задания 2:\t" + Arrays.toString(mass));
+        for (int i = 0, j = 0; i < mass.length; i++, j += 3) mass[i] = (byte) j;
+        System.out.println("Результаты выполнения задания 2:\t" + Arrays.toString(mass));
+    }
 
+    public static void main(String[] args) {
+        z1();
+        System.out.println();
+        z2();
     }
 }
