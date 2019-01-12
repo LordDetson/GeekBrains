@@ -25,7 +25,7 @@ public class Homework {
     }
 
     private static void checkPositiveOrNegativeNumber(int value) {
-        System.out.print(NUMBER_STR + SEPARATOR + value + SEPARATOR + (value < 0 ? NEGATIVE_STR : POSITIVE_STR));
+        System.out.println(NUMBER_STR + SEPARATOR + value + SEPARATOR + (value < 0 ? NEGATIVE_STR : POSITIVE_STR));
     }
 
     private static boolean checkNegativeNumber(int value) {
@@ -41,6 +41,34 @@ public class Homework {
     }
 
     public static void main(String[] args) {
+        int a = 10, b = 20, c = 30, d = 40;
+        String name = "Dima";
+        int year = 2019;
 
+        System.out.println("Исходные данные задания 3: a = " + a + ", b = " + b + ", c = " + c + ", d = " + d);
+        System.out.println("Результат выполнения заданий 3: " + calcExpression(a, b, c, d));
+        System.out.println();
+
+        System.out.println("Исходные данные задания 4: a = " + a + ", b = " + b);
+        System.out.println("Результат выполнения заданий 4: " + checkSum(a, b));
+        System.out.println();
+
+        System.out.println("Исходные данные задания 5: a = " + a);
+        System.out.print("Результат выполнения заданий 5: ");
+        checkPositiveOrNegativeNumber(a);
+        System.out.println();
+
+        a = -8;
+        System.out.println("Исходные данные задания 6: a = " + a);
+        System.out.println("Результат выполнения заданий 6: " + checkNegativeNumber(a));
+        System.out.println();
+
+        System.out.println("Исходные данные задания 7: name = " + name);
+        System.out.print("Результат выполнения заданий 7: ");
+        printHello(name);
+        System.out.println();
+
+        System.out.println("Исходные данные задания 8: year = " + year);
+        System.out.println("Результат выполнения заданий 8: " + year + " " + (checkLeapYear(year)?"високосный":"невисокосный") + " год");
     }
 }
