@@ -81,6 +81,34 @@ public class Homework {
         return false;
     }
 
+    private static void z7() {
+        int[] mass = new int[20];
+        int n = random.nextInt(40) - 20;
+        Arrays.parallelSetAll(mass, operand -> random.nextInt(100));
+        System.out.println("Исходные данные задания 7:\t\t\t" + Arrays.toString(mass) + " n = " + n);
+        System.out.println("Результаты выполнения задания 7:\t" + Arrays.toString(doSlip(mass, n)));
+    }
+
+    private static int[] doSlip(int[] mass, int n) {
+        if (n > 0) {
+            for (int i = 0; i < n; i++) {
+                int buf = mass[mass.length - 1];
+                for (int j = mass.length - 1; j > 0; j--)
+                    mass[j] = mass[j - 1];
+                mass[0] = buf;
+            }
+        } else if (n < 0) {
+            n *= -1;
+            for (int i = 0; i < n; i++) {
+                int buf = mass[0];
+                for (int j = 0; j < mass.length - 1; j++)
+                    mass[j] = mass[j + 1];
+                mass[mass.length - 1] = buf;
+            }
+        }
+        return mass;
+    }
+
     public static void main(String[] args) {
         z1();
         System.out.println();
@@ -93,5 +121,7 @@ public class Homework {
         z5();
         System.out.println();
         z6();
+        System.out.println();
+        z7();
     }
 }
