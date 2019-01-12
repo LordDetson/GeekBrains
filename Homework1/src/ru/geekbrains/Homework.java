@@ -32,6 +32,10 @@ public class Homework {
         return value < 0;
     }
 
+    private static void printHello(String name) {
+        System.out.println("Hello, " + name + "!");
+    }
+
     public static void main(String[] args) {
 
     }
