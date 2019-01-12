@@ -1,6 +1,7 @@
 package ru.geekbrains;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class Homework {
 
@@ -50,6 +51,15 @@ public class Homework {
         }
     }
 
+    private static void z5() {
+        Random random = new Random();
+        int[] mass = new int[20];
+        for (int i = 0; i < mass.length; i++)
+            mass[i] = random.nextInt(100);
+        System.out.println("Исходные данные задания 5:\t\t\t" + Arrays.toString(mass));
+        System.out.println("Результаты выполнения задания 5:\t" + Arrays.stream(mass).summaryStatistics());
+    }
+
     public static void main(String[] args) {
         z1();
         System.out.println();
@@ -58,5 +68,7 @@ public class Homework {
         z3();
         System.out.println();
         z4();
+        System.out.println();
+        z5();
     }
 }
