@@ -28,6 +28,10 @@ public class Homework {
         System.out.print(NUMBER_STR + SEPARATOR + value + SEPARATOR + (value < 0 ? NEGATIVE_STR : POSITIVE_STR));
     }
 
+    private static boolean checkNegativeNumber(int value) {
+        return value < 0;
+    }
+
     public static void main(String[] args) {
 
     }
