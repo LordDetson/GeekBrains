@@ -5,6 +5,8 @@ import java.util.Random;
 
 public class Homework {
 
+    private static Random random = new Random();
+
     private static void z1() {
         byte[] mass = {1, 0, 1, 0, 1, 1, 1, 0};
         System.out.println("Исходные данные задания 1:\t\t\t" + Arrays.toString(mass));
@@ -52,12 +54,31 @@ public class Homework {
     }
 
     private static void z5() {
-        Random random = new Random();
         int[] mass = new int[20];
-        for (int i = 0; i < mass.length; i++)
-            mass[i] = random.nextInt(100);
+        Arrays.parallelSetAll(mass, operand -> random.nextInt(100));
         System.out.println("Исходные данные задания 5:\t\t\t" + Arrays.toString(mass));
         System.out.println("Результаты выполнения задания 5:\t" + Arrays.stream(mass).summaryStatistics());
+    }
+
+    private static void z6() {
+        //int[] mass = {1, 1, 1, 2, 1};
+        int[] mass = new int[20];
+        Arrays.parallelSetAll(mass, operand -> random.nextInt(100));
+        System.out.println("Исходные данные задания 6:\t\t\t" + Arrays.toString(mass));
+        System.out.println("Результаты выполнения задания 6:\t" + checkBalance(mass));
+    }
+
+    private static boolean checkBalance(int[] mass) {
+        for (int i = 1; i < mass.length - 1; i++) {
+            int sumLeft = 0, sumRight = 0;
+            for (int j = 0; j < i; j++)
+                sumLeft += mass[j];
+            for (int j = i; j < mass.length; j++)
+                sumRight += mass[j];
+            if (sumLeft == sumRight)
+                return true;
+        }
+        return false;
     }
 
     public static void main(String[] args) {
@@ -70,5 +91,7 @@ public class Homework {
         z4();
         System.out.println();
         z5();
+        System.out.println();
+        z6();
     }
 }
