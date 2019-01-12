@@ -10,6 +10,10 @@ public class Homework {
     private static char aChar = 'd';
     private static boolean aBoolean = false;
 
+    private static double calcExpression(double a, double b, double c, double d) {
+        return a * (b + (c / d));
+    }
+
     public static void main(String[] args) {
 
     }
