@@ -10,6 +10,11 @@ public class Homework {
     private static char aChar = 'd';
     private static boolean aBoolean = false;
 
+    private static final String NUMBER_STR = "Число";
+    private static final String POSITIVE_STR = "положительное";
+    private static final String NEGATIVE_STR = "отрицательное";
+    private static final String SEPARATOR = " ";
+
     private static double calcExpression(double a, double b, double c, double d) {
         return a * (b + (c / d));
     }
@@ -17,6 +22,10 @@ public class Homework {
     private static boolean checkSum(double a, double b) {
         double sum = a + b;
         return sum >= 10 && sum <= 20;
+    }
+
+    private static void checkPositiveOrNegativeNumber(int value) {
+        System.out.print(NUMBER_STR + SEPARATOR + value + SEPARATOR + (value < 0 ? NEGATIVE_STR : POSITIVE_STR));
     }
 
     public static void main(String[] args) {
