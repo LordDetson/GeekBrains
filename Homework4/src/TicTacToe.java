@@ -1,6 +1,12 @@
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Java 1. Homework 4.
+ *
+ * @author Babanin Dmitry
+ * @version 14.01.2019
+ */
 public class TicTacToe {
     private static char[][] map;
     private static final int SIZE_MAP = 3;
