@@ -1,8 +1,11 @@
-package ru.geekbrains;
-
 import java.util.Random;
 import java.util.Scanner;
-
+/**
+ * Java 1. Homework 3.
+ *
+ * @author Babanin Dmitry
+ * @version 14.01.2019
+ */
 public class Homework {
     private static void gameGuessTheNumber() {
         Random random = new Random();
