@@ -1,5 +1,6 @@
 package ru.geekbrains;
 
+import java.awt.*;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -15,11 +16,73 @@ public class TicTacToe {
     private static Scanner sc = new Scanner(System.in);
     private static Random rand = new Random();
 
+    private static int[][][] mapWin;
+
     private static void initMap() {
         map = new char[SIZE_MAP][SIZE_MAP];
         for (int i = 0; i < SIZE_MAP; i++)
             for (int j = 0; j < SIZE_MAP; j++)
                 map[i][j] = CHIP_EMPTY;
+    }
+
+    private static void initMapWin() {
+        mapWin = new int[8][3][2];
+
+        mapWin[0][0][0] = 0;
+        mapWin[0][0][1] = 0;
+        mapWin[0][1][0] = 1;
+        mapWin[0][1][1] = 0;
+        mapWin[0][2][0] = 2;
+        mapWin[0][2][1] = 0;
+
+        mapWin[1][0][0] = 0;
+        mapWin[1][0][1] = 1;
+        mapWin[1][1][0] = 1;
+        mapWin[1][1][1] = 1;
+        mapWin[1][2][0] = 2;
+        mapWin[1][2][1] = 1;
+
+        mapWin[2][0][0] = 0;
+        mapWin[2][0][1] = 2;
+        mapWin[2][1][0] = 1;
+        mapWin[2][1][1] = 2;
+        mapWin[2][2][0] = 2;
+        mapWin[2][2][1] = 2;
+
+        mapWin[3][0][0] = 0;
+        mapWin[3][0][1] = 0;
+        mapWin[3][1][0] = 0;
+        mapWin[3][1][1] = 1;
+        mapWin[3][2][0] = 0;
+        mapWin[3][2][1] = 2;
+
+        mapWin[4][0][0] = 1;
+        mapWin[4][0][1] = 0;
+        mapWin[4][1][0] = 1;
+        mapWin[4][1][1] = 1;
+        mapWin[4][2][0] = 1;
+        mapWin[4][2][1] = 2;
+
+        mapWin[5][0][0] = 2;
+        mapWin[5][0][1] = 0;
+        mapWin[5][1][0] = 2;
+        mapWin[5][1][1] = 1;
+        mapWin[5][2][0] = 2;
+        mapWin[5][2][1] = 2;
+
+        mapWin[6][0][0] = 0;
+        mapWin[6][0][1] = 0;
+        mapWin[6][1][0] = 1;
+        mapWin[6][1][1] = 1;
+        mapWin[6][2][0] = 2;
+        mapWin[6][2][1] = 2;
+
+        mapWin[7][0][0] = 2;
+        mapWin[7][0][1] = 0;
+        mapWin[7][1][0] = 1;
+        mapWin[7][1][1] = 1;
+        mapWin[7][2][0] = 0;
+        mapWin[7][2][1] = 2;
     }
 
     private static void printMap() {
@@ -68,14 +131,15 @@ public class TicTacToe {
     }
 
     private static boolean checkWin(char symb) {
-        if (map[0][0] == symb && map[0][1] == symb && map[0][2] == symb) return true;
-        if (map[1][0] == symb && map[1][1] == symb && map[1][2] == symb) return true;
-        if (map[2][0] == symb && map[2][1] == symb && map[2][2] == symb) return true;
-        if (map[0][0] == symb && map[1][0] == symb && map[2][0] == symb) return true;
-        if (map[0][1] == symb && map[1][1] == symb && map[2][1] == symb) return true;
-        if (map[0][2] == symb && map[1][2] == symb && map[2][2] == symb) return true;
-        if (map[0][0] == symb && map[1][1] == symb && map[2][2] == symb) return true;
-        if (map[2][0] == symb && map[1][1] == symb && map[0][2] == symb) return true;
+        int countTrue;
+        for (int[][] aMapWin : mapWin) {
+            countTrue = 0;
+            for (int[] bMapWin : aMapWin)
+                if (map[bMapWin[1]][bMapWin[0]] == symb)
+                    countTrue++;
+            if (countTrue == 3)
+                return true;
+        }
         return false;
     }
 
@@ -90,6 +154,7 @@ public class TicTacToe {
 
     public static void main(String[] args) {
         initMap();
+        initMapWin();
         printMap();
         while (true) {
             humanStep();
