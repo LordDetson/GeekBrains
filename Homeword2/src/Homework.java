@@ -1,5 +1,3 @@
-package ru.geekbrains;
-
 import java.util.Arrays;
 import java.util.Random;
 
