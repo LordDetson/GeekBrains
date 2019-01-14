@@ -1,6 +1,12 @@
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * Java 1. Homework 2.
+ *
+ * @author Babanin Dmitry
+ * @version 14.01.2019
+ */
 public class Homework {
 
     private static Random random = new Random();
