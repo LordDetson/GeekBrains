@@ -1,6 +1,3 @@
-package ru.geekbrains;
-
-import java.awt.*;
 import java.util.Random;
 import java.util.Scanner;
 
