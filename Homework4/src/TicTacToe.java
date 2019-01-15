@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -9,8 +10,8 @@ import java.util.Scanner;
  */
 public class TicTacToe {
     private static char[][] map;
-    private static final int SIZE_MAP = 3;
-    private static final int CHIPS_TO_WIN = 3;
+    private static final int SIZE_MAP = 5;
+    private static final int CHIPS_TO_WIN = 4;
 
     private static final char CHIP_EMPTY = '*';
     private static final char CHIP_X = 'X';
@@ -19,73 +20,15 @@ public class TicTacToe {
     private static Scanner sc = new Scanner(System.in);
     private static Random rand = new Random();
 
-    private static int[][][] mapWin;
+    private enum ChainWay {
+        NONE, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST
+    }
 
     private static void initMap() {
         map = new char[SIZE_MAP][SIZE_MAP];
         for (int i = 0; i < SIZE_MAP; i++)
             for (int j = 0; j < SIZE_MAP; j++)
                 map[i][j] = CHIP_EMPTY;
-    }
-
-    private static void initMapWin() {
-        mapWin = new int[8][3][2];
-
-        mapWin[0][0][0] = 0;
-        mapWin[0][0][1] = 0;
-        mapWin[0][1][0] = 1;
-        mapWin[0][1][1] = 0;
-        mapWin[0][2][0] = 2;
-        mapWin[0][2][1] = 0;
-
-        mapWin[1][0][0] = 0;
-        mapWin[1][0][1] = 1;
-        mapWin[1][1][0] = 1;
-        mapWin[1][1][1] = 1;
-        mapWin[1][2][0] = 2;
-        mapWin[1][2][1] = 1;
-
-        mapWin[2][0][0] = 0;
-        mapWin[2][0][1] = 2;
-        mapWin[2][1][0] = 1;
-        mapWin[2][1][1] = 2;
-        mapWin[2][2][0] = 2;
-        mapWin[2][2][1] = 2;
-
-        mapWin[3][0][0] = 0;
-        mapWin[3][0][1] = 0;
-        mapWin[3][1][0] = 0;
-        mapWin[3][1][1] = 1;
-        mapWin[3][2][0] = 0;
-        mapWin[3][2][1] = 2;
-
-        mapWin[4][0][0] = 1;
-        mapWin[4][0][1] = 0;
-        mapWin[4][1][0] = 1;
-        mapWin[4][1][1] = 1;
-        mapWin[4][2][0] = 1;
-        mapWin[4][2][1] = 2;
-
-        mapWin[5][0][0] = 2;
-        mapWin[5][0][1] = 0;
-        mapWin[5][1][0] = 2;
-        mapWin[5][1][1] = 1;
-        mapWin[5][2][0] = 2;
-        mapWin[5][2][1] = 2;
-
-        mapWin[6][0][0] = 0;
-        mapWin[6][0][1] = 0;
-        mapWin[6][1][0] = 1;
-        mapWin[6][1][1] = 1;
-        mapWin[6][2][0] = 2;
-        mapWin[6][2][1] = 2;
-
-        mapWin[7][0][0] = 2;
-        mapWin[7][0][1] = 0;
-        mapWin[7][1][0] = 1;
-        mapWin[7][1][1] = 1;
-        mapWin[7][2][0] = 0;
-        mapWin[7][2][1] = 2;
     }
 
     private static void printMap() {
@@ -123,6 +66,12 @@ public class TicTacToe {
         return false;
     }
 
+    private static boolean isSymbCoordinateValid(char symb, int x, int y) {
+        if (x >= 0 && x < SIZE_MAP && y >= 0 && y < SIZE_MAP)
+            return map[y][x] == symb;
+        return false;
+    }
+
     private static void iiStep() {
         int x, y;
         do {
@@ -133,17 +82,59 @@ public class TicTacToe {
         map[y][x] = CHIP_O;
     }
 
-    private static boolean checkWin(char symb) {
-        int countTrue;
-        for (int[][] aMapWin : mapWin) {
-            countTrue = 0;
-            for (int[] bMapWin : aMapWin)
-                if (map[bMapWin[1]][bMapWin[0]] == symb)
-                    countTrue++;
-            if (countTrue == 3)
-                return true;
+    private static boolean checkWin(char symb, int amountChipsInChainForWin) {
+        System.out.println("symb = " + symb);
+        int[] symbCoordinate = getSymbCoordinate(symb);
+        System.out.println("symbCoordinate = " + Arrays.toString(symbCoordinate));
+        int x = symbCoordinate[0];
+        int y = symbCoordinate[1];
+        int amountChipsInChain = 0;
+        ChainWay way = defineChainWayBySymbCoordinate(symb, x, y);
+        System.out.println("way = " + way.name());
+        for (int i = 0; i < amountChipsInChainForWin - 1; i++) {
+            switch (way) {
+                case EAST:
+                    x++;
+                    break;
+                case SOUTH_EAST:
+                    x++;
+                    y++;
+                    break;
+                case SOUTH:
+                    y++;
+                    break;
+                case SOUTH_WEST:
+                    x--;
+                    y++;
+                    break;
+                case NONE:
+                    return false;
+            }
+            if (isSymbCoordinateValid(symb, x, y))
+                amountChipsInChain++;
         }
-        return false;
+        System.out.println("amountChipsInChain = " + amountChipsInChain);
+        return amountChipsInChain == amountChipsInChainForWin - 1;
+    }
+
+    private static int[] getSymbCoordinate(char symb) {
+        for (int i = 0; i < SIZE_MAP; i++)
+            for (int j = 0; j < SIZE_MAP; j++)
+                if (map[i][j] == symb)
+                    return new int[]{j, i};
+        return new int[]{-1, -1};
+    }
+
+    private static ChainWay defineChainWayBySymbCoordinate(char symb, int x, int y) {
+        if (isSymbCoordinateValid(symb, x + 1, y))
+            return ChainWay.EAST;
+        if (isSymbCoordinateValid(symb, x + 1, y + 1))
+            return ChainWay.SOUTH_EAST;
+        if (isSymbCoordinateValid(symb, x, y + 1))
+            return ChainWay.SOUTH;
+        if (isSymbCoordinateValid(symb, x - 1, y + 1))
+            return ChainWay.SOUTH_WEST;
+        return ChainWay.NONE;
     }
 
     private static boolean isMapFull() {
@@ -157,12 +148,11 @@ public class TicTacToe {
 
     public static void main(String[] args) {
         initMap();
-        initMapWin();
         printMap();
         while (true) {
             humanStep();
             printMap();
-            if (checkWin(CHIP_X)) {
+            if (checkWin(CHIP_X, CHIPS_TO_WIN)) {
                 System.out.println("Победил человек");
                 break;
             }
@@ -172,7 +162,7 @@ public class TicTacToe {
             }
             iiStep();
             printMap();
-            if (checkWin(CHIP_O)) {
+            if (checkWin(CHIP_O, CHIPS_TO_WIN)) {
                 System.out.println("Победил Искуственный Интеллект");
                 break;
             }
