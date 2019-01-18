@@ -44,6 +44,10 @@ public class Homework {
             mass[i][j] = 1;
         for (int i = 0, j = mass.length - 1; i < mass.length; i++, j--)
             mass[i][j] = 1;
+        /*for (int i = 0; i < mass.length; i++) {
+            mass[i][i] = 1;
+            mass[i][mass.length - i - 1] = 1;
+        }*/
 
         System.out.println("Результаты выполнения задания 4:");
         printMass(mass);
