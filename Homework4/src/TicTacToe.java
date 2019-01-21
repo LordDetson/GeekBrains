@@ -56,14 +56,8 @@ public class TicTacToe {
             System.out.println("Введите координату Y");
             System.out.print(">> ");
             if (sc.hasNextInt()) y = sc.nextInt();
-        } while (!isStepValid(x, y));
+        } while (!isSymbCoordinateValid(CHIP_EMPTY, x, y));
         map[y][x] = CHIP_X;
-    }
-
-    private static boolean isStepValid(int x, int y) {
-        if (x >= 0 && x < SIZE_MAP && y >= 0 && y < SIZE_MAP)
-            return map[y][x] == CHIP_EMPTY;
-        return false;
     }
 
     private static boolean isSymbCoordinateValid(char symb, int x, int y) {
@@ -72,12 +66,12 @@ public class TicTacToe {
         return false;
     }
 
-    private static void iiStep() {
+    private static void aiStep() {
         int x, y;
         do {
             x = rand.nextInt(SIZE_MAP);
             y = rand.nextInt(SIZE_MAP);
-        } while (!isStepValid(x, y));
+        } while (!isSymbCoordinateValid(CHIP_EMPTY, x, y));
         System.out.println("Компьютер походил в точку " + x + " " + y);
         map[y][x] = CHIP_O;
     }
@@ -160,7 +154,7 @@ public class TicTacToe {
                 System.out.println("Ничья");
                 break;
             }
-            iiStep();
+            aiStep();
             printMap();
             if (checkWin(CHIP_O, CHIPS_TO_WIN)) {
                 System.out.println("Победил Искуственный Интеллект");
