@@ -51,7 +51,7 @@ public abstract class Animal {
         setWidth(width);
         setHeight(height);
         setMass(mass);
-        System.out.println(setMaxRoadObstacleLength(maxRoadObstacleLength));
+        setMaxRoadObstacleLength(maxRoadObstacleLength);
         setMaxWaterObstacleLength(maxWaterObstacleLength);
         setMaxHeightObstacleLength(maxHeightObstacleLength);
     }
