@@ -13,12 +13,12 @@ public abstract class Animal {
     private double maxWaterObstacleLength;
     private double maxHeightObstacleLength;
 
-    Animal(String name, LocalDate birthday) {
+    protected Animal(String name, LocalDate birthday) {
         this.name = name;
         this.birthday = birthday;
     }
 
-    Animal(String name, LocalDate birthday, double length, double width, double height, double mass) {
+    protected Animal(String name, LocalDate birthday, double length, double width, double height, double mass) {
         this.name = name;
         this.birthday = birthday;
         this.length = length;
@@ -27,17 +27,29 @@ public abstract class Animal {
         this.mass = mass;
     }
 
-    public Animal(String name, LocalDate birthday, double length, double width, double height, double mass,
-                  double maxRoadObstacleLength, double maxWaterObstacleLength, double maxHeightObstacleLength) {
+    protected Animal(String name, LocalDate birthday, double maxRoadObstacleLength, double maxWaterObstacleLength, double maxHeightObstacleLength) {
         this.name = name;
-        this.birthday = birthday;
-        this.length = length;
-        this.width = width;
-        this.height = height;
-        this.mass = mass;
-        this.maxRoadObstacleLength = maxRoadObstacleLength;
-        this.maxWaterObstacleLength = maxWaterObstacleLength;
-        this.maxHeightObstacleLength = maxHeightObstacleLength;
+        if (!setBirthday(birthday)) {
+            this.birthday = LocalDate.now();
+        }
+        setMaxRoadObstacleLength(maxRoadObstacleLength);
+        setMaxWaterObstacleLength(maxWaterObstacleLength);
+        setMaxHeightObstacleLength(maxHeightObstacleLength);
+    }
+
+    protected Animal(String name, LocalDate birthday, double length, double width, double height, double mass,
+                     double maxRoadObstacleLength, double maxWaterObstacleLength, double maxHeightObstacleLength) {
+        this.name = name;
+        if (!setBirthday(birthday)) {
+            this.birthday = LocalDate.now();
+        }
+        setLength(length);
+        setWidth(width);
+        setHeight(height);
+        setMass(mass);
+        setMaxRoadObstacleLength(maxRoadObstacleLength);
+        setMaxWaterObstacleLength(maxWaterObstacleLength);
+        setMaxHeightObstacleLength(maxHeightObstacleLength);
     }
 
     public String getName() {
@@ -52,53 +64,72 @@ public abstract class Animal {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
+    public boolean setBirthday(LocalDate birthday) {
+        if (LocalDate.now().isAfter(birthday)) {
+            this.birthday = birthday;
+            return true;
+        }
+        return false;
     }
 
     public double getLength() {
         return length;
     }
 
-    public void setLength(double length) {
-        if (length >= 0)
+    public boolean setLength(double length) {
+        if (isGreaterThanZero(length)) {
             this.length = length;
+            return true;
+        }
+        return false;
     }
 
     public double getWidth() {
         return width;
     }
 
-    public void setWidth(double width) {
-        if (width >= 0)
+    public boolean setWidth(double width) {
+        if (isGreaterThanZero(width)) {
             this.width = width;
+            return true;
+        }
+        return false;
     }
 
     public double getHeight() {
         return height;
     }
 
-    public void setHeight(double height) {
-        if (height >= 0)
+    public boolean setHeight(double height) {
+        if (isGreaterThanZero(height)) {
             this.height = height;
+            return true;
+        }
+        return false;
     }
 
     public double getMass() {
         return mass;
     }
 
-    public void setMass(double mass) {
-        if (mass >= 0)
+    public boolean setMass(double mass) {
+        if (isGreaterThanZero(mass)) {
             this.mass = mass;
+            return true;
+        }
+        return false;
     }
 
     public double getMaxRoadObstacleLength() {
         return maxRoadObstacleLength;
     }
 
-    public void setMaxRoadObstacleLength(double maxRoadObstacleLength) {
-        if (maxRoadObstacleLength >= 0)
+    public boolean setMaxRoadObstacleLength(double maxRoadObstacleLength) {
+        if (isGreaterThanZero(maxRoadObstacleLength)) {
             this.maxRoadObstacleLength = maxRoadObstacleLength;
+            return true;
+        }
+        return false;
     }
 
     public double getMaxWaterObstacleLength() {
@@ -106,7 +137,7 @@ public abstract class Animal {
     }
 
     public void setMaxWaterObstacleLength(double maxWaterObstacleLength) {
-        if (maxWaterObstacleLength >= 0)
+        if (isGreaterThanZero(maxWaterObstacleLength))
             this.maxWaterObstacleLength = maxWaterObstacleLength;
     }
 
@@ -115,7 +146,7 @@ public abstract class Animal {
     }
 
     public void setMaxHeightObstacleLength(double maxHeightObstacleLength) {
-        if (maxHeightObstacleLength >= 0)
+        if (isGreaterThanZero(maxHeightObstacleLength))
             this.maxHeightObstacleLength = maxHeightObstacleLength;
     }
 
@@ -124,15 +155,15 @@ public abstract class Animal {
     }
 
     public boolean run(double length) {
-        return maxRoadObstacleLength <= length;
+        return isGreaterThanZero(length) && maxRoadObstacleLength >= length;
     }
 
     public boolean swim(double length) {
-        return maxWaterObstacleLength <= length;
+        return isGreaterThanZero(length) && maxWaterObstacleLength >= length;
     }
 
     public boolean jump(double height) {
-        return maxHeightObstacleLength <= height;
+        return isGreaterThanZero(height) && maxHeightObstacleLength >= height;
     }
 
     @Override
@@ -140,13 +171,21 @@ public abstract class Animal {
         return new StringJoiner(", ", Animal.class.getSimpleName() + "[", "]")
                 .add("name='" + name + "'")
                 .add("birthday=" + birthday)
-                .add("length=" + length)
-                .add("width=" + width)
-                .add("height=" + height)
-                .add("mass=" + mass)
-                .add("maxRoadObstacleLength=" + maxRoadObstacleLength)
-                .add("maxWaterObstacleLength=" + maxWaterObstacleLength)
-                .add("maxHeightObstacleLength=" + maxHeightObstacleLength)
+                .add("length=" + isTheParameterDefined(length))
+                .add("width=" + isTheParameterDefined(width))
+                .add("height=" + isTheParameterDefined(height))
+                .add("mass=" + isTheParameterDefined(mass))
+                .add("maxRoadObstacleLength=" + isTheParameterDefined(maxRoadObstacleLength))
+                .add("maxWaterObstacleLength=" + isTheParameterDefined(maxWaterObstacleLength))
+                .add("maxHeightObstacleLength=" + isTheParameterDefined(maxHeightObstacleLength))
                 .toString();
+    }
+
+    private static boolean isGreaterThanZero(double value) {
+        return value > 0;
+    }
+
+    private static Object isTheParameterDefined(double value) {
+        return isGreaterThanZero(value) ? value : "Не определено";
     }
 }
