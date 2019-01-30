@@ -15,16 +15,20 @@ public abstract class Animal {
 
     protected Animal(String name, LocalDate birthday) {
         this.name = name;
-        this.birthday = birthday;
+        if (!setBirthday(birthday)) {
+            this.birthday = LocalDate.now();
+        }
     }
 
     protected Animal(String name, LocalDate birthday, double length, double width, double height, double mass) {
         this.name = name;
-        this.birthday = birthday;
-        this.length = length;
-        this.width = width;
-        this.height = height;
-        this.mass = mass;
+        if (!setBirthday(birthday)) {
+            this.birthday = LocalDate.now();
+        }
+        setLength(length);
+        setWidth(width);
+        setHeight(height);
+        setMass(mass);
     }
 
     protected Animal(String name, LocalDate birthday, double maxRoadObstacleLength, double maxWaterObstacleLength, double maxHeightObstacleLength) {
@@ -47,7 +51,7 @@ public abstract class Animal {
         setWidth(width);
         setHeight(height);
         setMass(mass);
-        setMaxRoadObstacleLength(maxRoadObstacleLength);
+        System.out.println(setMaxRoadObstacleLength(maxRoadObstacleLength));
         setMaxWaterObstacleLength(maxWaterObstacleLength);
         setMaxHeightObstacleLength(maxHeightObstacleLength);
     }
@@ -136,18 +140,24 @@ public abstract class Animal {
         return maxWaterObstacleLength;
     }
 
-    public void setMaxWaterObstacleLength(double maxWaterObstacleLength) {
-        if (isGreaterThanZero(maxWaterObstacleLength))
+    public boolean setMaxWaterObstacleLength(double maxWaterObstacleLength) {
+        if (isGreaterThanZero(maxWaterObstacleLength)) {
             this.maxWaterObstacleLength = maxWaterObstacleLength;
+            return true;
+        }
+        return false;
     }
 
     public double getMaxHeightObstacleLength() {
         return maxHeightObstacleLength;
     }
 
-    public void setMaxHeightObstacleLength(double maxHeightObstacleLength) {
-        if (isGreaterThanZero(maxHeightObstacleLength))
+    public boolean setMaxHeightObstacleLength(double maxHeightObstacleLength) {
+        if (isGreaterThanZero(maxHeightObstacleLength)) {
             this.maxHeightObstacleLength = maxHeightObstacleLength;
+            return true;
+        }
+        return false;
     }
 
     public int getAge() {
@@ -168,7 +178,7 @@ public abstract class Animal {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", Animal.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", this.getClass().getSimpleName() + "[", "]")
                 .add("name='" + name + "'")
                 .add("birthday=" + birthday)
                 .add("length=" + isTheParameterDefined(length))

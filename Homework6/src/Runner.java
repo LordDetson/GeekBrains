@@ -3,9 +3,16 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class Runner {
+    private static final double MAX_RANDOM = 1000;
+    private static Random random = new Random();
     private static List<Animal> animals = new ArrayList<>();
+
+    private static double rand() {
+        return random.nextDouble() * MAX_RANDOM;
+    }
 
     public static void main(String[] args) {
         animals.addAll(Arrays.asList(
@@ -24,6 +31,14 @@ public class Runner {
 
         ));
 
-        animals.forEach(System.out::println);
+        animals.forEach(animal -> {
+            double runLength = rand();
+            double swimLength = rand();
+            double jumpHeight = rand();
+            System.out.println(animal);
+            System.out.println("Run = " + animal.run(runLength) + ", rand = " + runLength);
+            System.out.println("Swim = " + animal.swim(swimLength) + ", rand = " + swimLength);
+            System.out.println("Jump = " + animal.jump(jumpHeight) + ", rand = " + jumpHeight);
+        });
     }
 }
