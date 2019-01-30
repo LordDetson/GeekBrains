@@ -3,6 +3,12 @@ import java.util.StringJoiner;
 
 public abstract class Animal {
 
+    private static class ZeroComparator {
+        static boolean isGreaterThanZero(double value) {
+            return value > 0;
+        }
+    }
+
     private String name;
     private LocalDate birthday;
     private double length;
@@ -81,7 +87,7 @@ public abstract class Animal {
     }
 
     public boolean setLength(double length) {
-        if (isGreaterThanZero(length)) {
+        if (ZeroComparator.isGreaterThanZero(length)) {
             this.length = length;
             return true;
         }
@@ -93,7 +99,7 @@ public abstract class Animal {
     }
 
     public boolean setWidth(double width) {
-        if (isGreaterThanZero(width)) {
+        if (ZeroComparator.isGreaterThanZero(width)) {
             this.width = width;
             return true;
         }
@@ -105,7 +111,7 @@ public abstract class Animal {
     }
 
     public boolean setHeight(double height) {
-        if (isGreaterThanZero(height)) {
+        if (ZeroComparator.isGreaterThanZero(height)) {
             this.height = height;
             return true;
         }
@@ -117,7 +123,7 @@ public abstract class Animal {
     }
 
     public boolean setMass(double mass) {
-        if (isGreaterThanZero(mass)) {
+        if (ZeroComparator.isGreaterThanZero(mass)) {
             this.mass = mass;
             return true;
         }
@@ -129,7 +135,7 @@ public abstract class Animal {
     }
 
     public boolean setMaxRoadObstacleLength(double maxRoadObstacleLength) {
-        if (isGreaterThanZero(maxRoadObstacleLength)) {
+        if (ZeroComparator.isGreaterThanZero(maxRoadObstacleLength)) {
             this.maxRoadObstacleLength = maxRoadObstacleLength;
             return true;
         }
@@ -141,7 +147,7 @@ public abstract class Animal {
     }
 
     public boolean setMaxWaterObstacleLength(double maxWaterObstacleLength) {
-        if (isGreaterThanZero(maxWaterObstacleLength)) {
+        if (ZeroComparator.isGreaterThanZero(maxWaterObstacleLength)) {
             this.maxWaterObstacleLength = maxWaterObstacleLength;
             return true;
         }
@@ -153,7 +159,7 @@ public abstract class Animal {
     }
 
     public boolean setMaxHeightObstacleLength(double maxHeightObstacleLength) {
-        if (isGreaterThanZero(maxHeightObstacleLength)) {
+        if (ZeroComparator.isGreaterThanZero(maxHeightObstacleLength)) {
             this.maxHeightObstacleLength = maxHeightObstacleLength;
             return true;
         }
@@ -165,37 +171,35 @@ public abstract class Animal {
     }
 
     public boolean run(double length) {
-        return isGreaterThanZero(length) && maxRoadObstacleLength >= length;
+        return ZeroComparator.isGreaterThanZero(length) && maxRoadObstacleLength >= length;
     }
 
     public boolean swim(double length) {
-        return isGreaterThanZero(length) && maxWaterObstacleLength >= length;
+        return ZeroComparator.isGreaterThanZero(length) && maxWaterObstacleLength >= length;
     }
 
     public boolean jump(double height) {
-        return isGreaterThanZero(height) && maxHeightObstacleLength >= height;
+        return ZeroComparator.isGreaterThanZero(height) && maxHeightObstacleLength >= height;
     }
 
     @Override
     public String toString() {
+        class Defineder {
+            Object getParameterDefined(double value) {
+                return ZeroComparator.isGreaterThanZero(value) ? value : "Не определено";
+            }
+        }
+        Defineder defineder = new Defineder();
         return new StringJoiner(", ", this.getClass().getSimpleName() + "[", "]")
                 .add("name='" + name + "'")
                 .add("birthday=" + birthday)
-                .add("length=" + isTheParameterDefined(length))
-                .add("width=" + isTheParameterDefined(width))
-                .add("height=" + isTheParameterDefined(height))
-                .add("mass=" + isTheParameterDefined(mass))
-                .add("maxRoadObstacleLength=" + isTheParameterDefined(maxRoadObstacleLength))
-                .add("maxWaterObstacleLength=" + isTheParameterDefined(maxWaterObstacleLength))
-                .add("maxHeightObstacleLength=" + isTheParameterDefined(maxHeightObstacleLength))
+                .add("length=" + defineder.getParameterDefined(length))
+                .add("width=" + defineder.getParameterDefined(width))
+                .add("height=" + defineder.getParameterDefined(height))
+                .add("mass=" + defineder.getParameterDefined(mass))
+                .add("maxRoadObstacleLength=" + defineder.getParameterDefined(maxRoadObstacleLength))
+                .add("maxWaterObstacleLength=" + defineder.getParameterDefined(maxWaterObstacleLength))
+                .add("maxHeightObstacleLength=" + defineder.getParameterDefined(maxHeightObstacleLength))
                 .toString();
-    }
-
-    private static boolean isGreaterThanZero(double value) {
-        return value > 0;
-    }
-
-    private static Object isTheParameterDefined(double value) {
-        return isGreaterThanZero(value) ? value : "Не определено";
     }
 }
