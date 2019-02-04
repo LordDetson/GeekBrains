@@ -26,7 +26,7 @@ public class LeftPanel extends JPanel {
         textField.setMaximumSize(new Dimension(200, 25));
         add(textField);
         button.addActionListener(e -> {
-            plate.setFood(Integer.valueOf(textField.getText()));
+            plate.putFood(Integer.valueOf(textField.getText()));
         });
         add(button);
     }
