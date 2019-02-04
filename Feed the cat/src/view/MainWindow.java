@@ -37,7 +37,7 @@ public class MainWindow extends JFrame {
 
     public void run() {
         while (true) {
-            plate.changeSkin(Plate.SKIN_PLATE_2);
+            plate.changeSkin(Plate.SKIN_PLATE_1);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
