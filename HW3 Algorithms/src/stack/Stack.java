@@ -1,6 +1,6 @@
-package Stack;
+package stack;
 
-public interface Stack<T> {
+public interface Stack<T> extends Iterable<T> {
     int MAX_SIZE = Integer.MAX_VALUE;
     int MIN_SIZE = 0;
 

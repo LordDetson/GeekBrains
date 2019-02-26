@@ -1,17 +1,17 @@
-package Stack;
+package stack;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Random;
-import java.util.StringJoiner;
+import java.util.*;
 
-public class StackImpl<T> implements Stack<T>, Iterable<T> {
+public final class StackImpl<T> implements Stack<T> {
     private Object[] values;
     private int size;
     private int itemTop = -1;
 
     public StackImpl(int size) {
-        values = new Object[size];
+        if (size >= MIN_SIZE)
+            values = new Object[size];
+        else
+            values = new Object[MIN_SIZE];
         this.size = values.length;
     }
 
@@ -51,6 +51,10 @@ public class StackImpl<T> implements Stack<T>, Iterable<T> {
         return size;
     }
 
+    public int getItemTop() {
+        return itemTop;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ", StackImpl.class.getSimpleName() + "[", "]")
@@ -65,7 +69,7 @@ public class StackImpl<T> implements Stack<T>, Iterable<T> {
         return new Iterator<T>() {
             @Override
             public boolean hasNext() {
-                return isEmpty();
+                return !isEmpty();
             }
 
             @Override
@@ -86,8 +90,8 @@ public class StackImpl<T> implements Stack<T>, Iterable<T> {
             }
             System.out.println();
             System.out.println(integerStack);
-            while (!integerStack.isEmpty()) {
-                System.out.print(integerStack.pop() + " ");
+            for (Integer integer : integerStack) {
+                System.out.print(integer + " ");
             }
         }
     }
