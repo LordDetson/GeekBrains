@@ -1,5 +1,11 @@
+package animal;
+
+import action.Jump;
+
+import java.util.StringJoiner;
+
 public class Cat extends Animal implements Jump {
-    private int jumpHeight;
+    int jumpHeight;
 
     public Cat(int canRunDistance, int jumpHeight) {
         super(canRunDistance, "cat");
@@ -11,5 +17,15 @@ public class Cat extends Animal implements Jump {
         if (this.jumpHeight < height) {
             setOnDistance(false);
         }
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Cat.class.getSimpleName() + "[", "]")
+                .add("name='" + name + "'")
+                .add("canRunDistance=" + canRunDistance)
+                .add("jumpHeight=" + jumpHeight)
+                .add("onDistance=" + onDistance)
+                .toString();
     }
 }

@@ -1,4 +1,19 @@
-package PACKAGE_NAME;
+import animal.Animal;
+import obstacle.Obstacle;
 
-public class Course {
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Course extends ArrayList<Obstacle> {
+    public Course(Obstacle... obstacles) {
+        Collections.addAll(this, obstacles);
+    }
+
+    public void doIt(Team team) {
+        for (Obstacle obstacle : this) {
+            for (Animal animal : team) {
+                obstacle.doIt(animal);
+            }
+        }
+    }
 }

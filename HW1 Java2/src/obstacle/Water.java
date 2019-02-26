@@ -1,8 +1,10 @@
+package obstacle;
+
 import action.Swimable;
 import animal.Animal;
 
 public class Water extends Obstacle {
-    protected Water(int size) {
+    public Water(int size) {
         super(size);
     }
 

@@ -1,7 +1,9 @@
+package obstacle;
+
 import animal.Animal;
 
 public class Road extends Obstacle {
-    protected Road(int size) {
+    public Road(int size) {
         super(size);
     }
 

@@ -1,3 +1,9 @@
+package animal;
+
+import action.Swimable;
+
+import java.util.StringJoiner;
+
 public class Duck extends Animal implements Swimable {
     int canSwimDistance;
 
@@ -12,5 +18,15 @@ public class Duck extends Animal implements Swimable {
         if (this.canSwimDistance < distance) {
             setOnDistance(false);
         }
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Duck.class.getSimpleName() + "[", "]")
+                .add("name='" + name + "'")
+                .add("canRunDistance=" + canRunDistance)
+                .add("canSwimDistance=" + canSwimDistance)
+                .add("onDistance=" + onDistance)
+                .toString();
     }
 }

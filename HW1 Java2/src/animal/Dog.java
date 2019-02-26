@@ -1,8 +1,15 @@
-public class Dog extends Animal implements Swimable, Jump, Run {
-    private final int canSwimDistance;
-    private int jumpHeight;
+package animal;
 
-    protected Dog(int canSwimDistance, int runDistance, int jumpHeight) {
+import action.Jump;
+import action.Swimable;
+
+import java.util.StringJoiner;
+
+public class Dog extends Animal implements Swimable, Jump {
+    final int canSwimDistance;
+    int jumpHeight;
+
+    public Dog(int canSwimDistance, int runDistance, int jumpHeight) {
         super(runDistance, "dog");
         this.canSwimDistance = canSwimDistance;
         this.jumpHeight = jumpHeight;
@@ -23,8 +30,13 @@ public class Dog extends Animal implements Swimable, Jump, Run {
     }
 
     @Override
-    public void run(int dist) {
-        super.run(dist);
-        //dosomehting
+    public String toString() {
+        return new StringJoiner(", ", Dog.class.getSimpleName() + "[", "]")
+                .add("name='" + name + "'")
+                .add("canRunDistance=" + canRunDistance)
+                .add("jumpHeight=" + jumpHeight)
+                .add("canSwimDistance=" + canSwimDistance)
+                .add("onDistance=" + onDistance)
+                .toString();
     }
 }

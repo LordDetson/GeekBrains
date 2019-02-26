@@ -1,9 +1,11 @@
+package obstacle;
+
 import animal.Animal;
 
 public abstract class Obstacle {
-    protected final int size;
+    final int size;
 
-    protected Obstacle(int size) {
+    public Obstacle(int size) {
         this.size = size;
     }
 
