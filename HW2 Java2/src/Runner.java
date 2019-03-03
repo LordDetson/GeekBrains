@@ -308,12 +308,13 @@ public class Runner {
 
     public static void main(String[] args) {
         int size = 4;
-
+/*
         Object[][] array = new Object[size][size];
         array[1][2] = 1;
-        array[2][2] = "10";
+        array[2][1] = "10";
         //array[2][2] = "";     //Вызовет исключение
-
+        //array[2][3] = new Object();   //Вызовет исключение
+*/
 /*
         Object[][][] array = new Object[size][size][size];
         array[1][2][3] = 1;
@@ -338,8 +339,15 @@ public class Runner {
 /*
         double[][] array = {{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}};
 */
-        //System.out.println(deepSum(array));
-        System.out.println(sum4x4(array));
-        //System.out.println(deepSum2(array));
+/*
+        try {
+            //System.out.println(deepSum(array));
+            System.out.println(sum4x4(array));
+            //System.out.println(deepSum2(array));
+        } catch (MyArrayDataException | MyArraySizeException e) {
+            System.err.println("Вычисление суммы было прерванно, так как массив не соответствует требованиям");
+            e.printStackTrace();
+        }
+*/
     }
 }
