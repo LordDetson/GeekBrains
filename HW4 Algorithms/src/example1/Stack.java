@@ -1,4 +1,9 @@
 package example1;
 
-public class Stack {
+public interface Stack<T> {
+    void push(T value);
+
+    T peek();
+
+    T pop();
 }
