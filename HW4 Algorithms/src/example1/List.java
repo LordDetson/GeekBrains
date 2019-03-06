@@ -9,7 +9,17 @@ public interface List<T> {
 
     boolean isEmpty();
 
+    boolean remove();
+
     boolean remove(int index);
 
-    boolean remove(T value);
+    boolean removeValue(T value);
+
+    boolean contains(T value);
+
+    int find(T value);
+
+    int size();
+
+    NodeIterator<T> iterator();
 }

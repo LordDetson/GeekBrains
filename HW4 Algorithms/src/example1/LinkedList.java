@@ -1,9 +1,12 @@
 package example1;
 
+import java.util.Iterator;
 import java.util.StringJoiner;
 
 public class LinkedList<T> implements List<T>, Stack<T>, Queue<T>, Deque<T> {
+
     private class Node<T> {
+
         T value;
         Node<T> next;
         Node<T> previous;
@@ -61,14 +64,23 @@ public class LinkedList<T> implements List<T>, Stack<T>, Queue<T>, Deque<T> {
     }
 
     @Override
+    public boolean remove() {
+        return removeLast() != null;
+    }
+
+    @Override
     public boolean remove(int index) {
+        if (!isEmpty() && top == bottom) {
+            removeSingle();
+            return true;
+        }
         Node<T> bufNode = getNode(index);
         if (bufNode != null) {
             if (bufNode == top) {
-                return removeFirst() != null ? true : false;
+                return removeFirst() != null;
             }
             if (bufNode == bottom) {
-                return removeLast() != null ? true : false;
+                return removeLast() != null;
             }
             bufNode.getNext().setPrevious(bufNode.getPrevious());
             bufNode.getPrevious().setNext(bufNode.getNext());
@@ -81,8 +93,34 @@ public class LinkedList<T> implements List<T>, Stack<T>, Queue<T>, Deque<T> {
     }
 
     @Override
-    public boolean remove(T value) {
-        return false;
+    public boolean removeValue(T value) {
+        return remove(find(value));
+    }
+
+    @Override
+    public boolean contains(T value) {
+        return find(value) != -1;
+    }
+
+    @Override
+    public int find(T value) {
+        if (!isEmpty()) {
+            int indexCurrent = 0;
+            Node<T> current = top;
+            while (current.getNext() != null) {
+                if (current.getValue().equals(value)) {
+                    return indexCurrent;
+                }
+                indexCurrent++;
+                current = current.getNext();
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public int size() {
+        return size;
     }
 
     public void addFirst(T value) {
@@ -123,6 +161,9 @@ public class LinkedList<T> implements List<T>, Stack<T>, Queue<T>, Deque<T> {
 
     @Override
     public T removeFirst() {
+        if (!isEmpty() && top == bottom) {
+            return removeSingle();
+        }
         Node<T> bufNode;
         T buf;
         if ((buf = getFirst()) != null) {
@@ -137,6 +178,9 @@ public class LinkedList<T> implements List<T>, Stack<T>, Queue<T>, Deque<T> {
 
     @Override
     public T removeLast() {
+        if (!isEmpty() && top == bottom) {
+            return removeSingle();
+        }
         Node<T> bufNode;
         T buf;
         if ((buf = getLast()) != null) {
@@ -149,13 +193,21 @@ public class LinkedList<T> implements List<T>, Stack<T>, Queue<T>, Deque<T> {
         return buf;
     }
 
+    private T removeSingle() {
+        T value = top.getValue();
+        top = null;
+        bottom = null;
+        return value;
+    }
+
     public void add(int index, T value) {
         insert(new Node<>(value), getNode(index));
     }
 
     @Override
     public T get(int index) {
-        return getNode(index).getValue();
+        Node<T> buf = getNode(index);
+        return buf != null ? buf.getValue() : null;
     }
 
     private Node<T> getNode(int index) {
@@ -222,56 +274,58 @@ public class LinkedList<T> implements List<T>, Stack<T>, Queue<T>, Deque<T> {
         return removeFirst();
     }
 
-    public void display() {
+    @Override
+    public NodeIterator<T> iterator() {
+        return new NodeIterator<T>() {
+            Node<T> current = top;
+            int indexCurrent = 0;
+            @Override
+            public void reset() {
+                current = top;
+                indexCurrent = 0;
+            }
+
+            @Override
+            public void next() {
+                current = current.getNext();
+                indexCurrent++;
+            }
+
+            @Override
+            public T getCurrent() {
+                return current.getValue();
+            }
+
+            @Override
+            public boolean atEnd() {
+                return current == null;
+            }
+
+            @Override
+            public void insertAfter(T value) {
+                insert(new Node<>(value), current.getNext());
+            }
+
+            @Override
+            public void insertBefore(T value) {
+                insert(new Node<>(value), current);
+            }
+
+            @Override
+            public void deleteCurrent() {
+                remove(indexCurrent);
+            }
+        };
+    }
+
+    @Override
+    public String toString() {
         StringJoiner joiner = new StringJoiner(", ", "[", "]");
         Node<T> current = top;
         while (current != null) {
             joiner.add(current.getValue().toString());
             current = current.getNext();
         }
-        System.out.println(joiner);
+        return joiner.toString();
     }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", LinkedList.class.getSimpleName() + "[", "]")
-                .add("top=" + top)
-                .add("bottom=" + bottom)
-                .add("size=" + size)
-                .toString();
-    }
-
-    public static void main(String[] args) {
-        LinkedList<Integer> list = new LinkedList<>();
-        for (int i = 0; i < 10; i++) {
-            list.addFirst(i);
-        }
-        list.display();
-        System.out.println(list);
-        list.add(2, 10);
-        list.display();
-        System.out.println(list);
-        list.add(9, 10);
-        list.display();
-        System.out.println(list);
-        list.add(0, 10);
-        list.display();
-        System.out.println(list);
-        list.add(13, 10);
-        list.display();
-        System.out.println(list);
-        list.removeFirst();
-        list.display();
-        System.out.println(list);
-        list.removeLast();
-        list.display();
-        System.out.println(list);
-        list.remove(2);
-        list.display();
-        System.out.println(list);
-        list.remove(11);
-        list.display();
-        System.out.println(list);
-    }
-
 }
