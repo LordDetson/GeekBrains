@@ -31,6 +31,7 @@ public class ChatController {
         String message;
         if (!(message = messageField.getText().trim()).isEmpty()) {
             chatArea.appendText(message + "\n\n\r");
+            messageField.setText("");
         }
     }
 }
