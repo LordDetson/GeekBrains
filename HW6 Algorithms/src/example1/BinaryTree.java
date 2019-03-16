@@ -74,6 +74,31 @@ public class BinaryTree<K extends Comparable<K>, V extends Comparable<V>> {
         return null;
     }
 
+    public int getDepth() {
+        return getDepth(root, 0);
+    }
+
+    public int getDepthLeftSubTree() {
+        return getDepth(root.left, 0);
+    }
+
+    public int getDepthRightSubTree() {
+        return getDepth(root.right, 0);
+    }
+
+    private int getDepth(Node<K, V> current, int levelDepth) {
+        if (current == null) {
+            return levelDepth;
+        }
+        return Math.max(getDepth(current.left, levelDepth + 1),
+                getDepth(current.right, levelDepth + 1));
+    }
+
+    public boolean isВalanced() {
+        int n = Math.abs(getDepthLeftSubTree() - getDepthRightSubTree());
+        return n == 1 || n == 0;
+    }
+
     private Node<K, V> findMinByKey(@NotNull Node<K, V> current) {
         while (!isNull(current.left))
             current = current.left;
@@ -252,6 +277,18 @@ public class BinaryTree<K extends Comparable<K>, V extends Comparable<V>> {
         return count.get();
     }
 
+    public int countLeftSubTree() {
+        AtomicInteger count = new AtomicInteger();
+        traverseInOrder(node -> count.getAndIncrement(), root.left);
+        return count.get();
+    }
+
+    public int countRightSubTree() {
+        AtomicInteger count = new AtomicInteger();
+        traverseInOrder(node -> count.getAndIncrement(), root.right);
+        return count.get();
+    }
+
     @Override
     public String toString() {
         return super.toString();
@@ -260,21 +297,43 @@ public class BinaryTree<K extends Comparable<K>, V extends Comparable<V>> {
     private static class Test {
         private static Random random = new Random();
 
-        public static void main(String[] args) throws IOException {
-            BinaryTree<Integer, Integer> tree = new BinaryTree<>();
-            for (int i = 0; i < 5; i++) {
-                int key = random.nextInt(10);
-                int value = random.nextInt(10);
-                System.out.print(key + ":" + value + " ");
-                tree.insert(key, value);
+        public static int nextInt(int button, int top) {
+            if (button < 0) {
+                button = -button;
             }
-            System.out.println("\n");
-            System.out.println("count = " + tree.count() + "\n");
+            return random.nextInt(top + button) - button;
+        }
 
+        public static void main(String[] args) throws IOException {
+            BinaryTree[] treeMass = new BinaryTree[20];
+            int count = 0;
+            for (int i = 0; i < 20; i++) {
+                treeMass[i] = new BinaryTree<Integer, Integer>();
+                BinaryTree<Integer, Integer> tree = treeMass[i];
+                while (tree.getDepth() < 6) {
+                    int key = nextInt(-100, 100);
+                    int value = nextInt(-100, 100);
+                    //System.out.print(key + ":" + value + " ");
+                    tree.insert(key, value);
+                }
+                //System.out.println("\n");
+                System.out.println("[" + i + "]count = " + tree.count());
+                System.out.println("[" + i + "]countLeftSubTree = " + tree.countLeftSubTree());
+                System.out.println("[" + i + "]countRightSubTree = " + tree.countRightSubTree());
+                System.out.println("[" + i + "]getDepth = " + tree.getDepth());
+                System.out.println("[" + i + "]getDepthLeftSubTree = " + tree.getDepthLeftSubTree());
+                System.out.println("[" + i + "]getDepthRightSubTree = " + tree.getDepthRightSubTree());
+                System.out.println("\n");
+                if (!tree.isВalanced()) count++;
+            }
+
+            System.out.println("Statistics: " + (count / 20.0 * 100));
+/*
             System.out.println("displayPreOrder()");
             tree.displayPreOrder();
             System.out.println();
-
+            */
+/*
             System.out.println("displayPostOrder()");
             tree.displayPostOrder();
             System.out.println();
@@ -308,6 +367,7 @@ public class BinaryTree<K extends Comparable<K>, V extends Comparable<V>> {
             System.out.println("displayPreOrder()");
             tree.displayPreOrder();
             System.out.println();
+            */
         }
     }
 }
