@@ -255,6 +255,30 @@ public class BinaryTree<K extends Comparable<K>, V extends Comparable<V>> {
         }
     }
 
+    private List<Node<K, V>> getList() {
+        List<Node<K, V>> nodes = new ArrayList<>();
+        traversePreOrder(nodes::add, root);
+        return nodes;
+    }
+
+    private Node<K, V> getNewRoot() {
+        List<Node<K, V>> nodes = getList();
+        nodes.sort(Comparator.comparing(o -> o.key));
+        return nodes.get(nodes.size() / 2);
+    }
+
+    public void rebuildTree() {
+        BinaryTree<K, V> newTree = new BinaryTree<>();
+        Node<K, V> newRoot = getNewRoot();
+        newTree.insert(newRoot.key, newRoot.value);
+        for (Node<K, V> node : getList()) {
+            if (node.key.compareTo(newRoot.key) != 0 &&
+                    node.value.compareTo(newRoot.value) != 0)
+                newTree.insert(node.key, node.value);
+        }
+        root = newTree.root;
+    }
+
     public void displayPreOrder() {
         traversePreOrder(System.out::println, root);
     }
@@ -316,6 +340,7 @@ public class BinaryTree<K extends Comparable<K>, V extends Comparable<V>> {
                     //System.out.print(key + ":" + value + " ");
                     tree.insert(key, value);
                 }
+                tree.rebuildTree();
                 //System.out.println("\n");
                 System.out.println("[" + i + "]count = " + tree.count());
                 System.out.println("[" + i + "]countLeftSubTree = " + tree.countLeftSubTree());
