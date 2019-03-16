@@ -114,56 +114,82 @@ public class BinaryTree<K extends Comparable<K>, V extends Comparable<V>> {
         }
     }
 
+    private enum NodeTypeByHavingChild {
+        NO_CHILDREN,
+        ONLY_LEFT_CHILD,
+        ONLY_RIGHT_CHILD,
+        TWO_CHILDREN
+    }
+
+    private NodeTypeByHavingChild defineType(Node<K, V> node) {
+        if (node.left == null && node.right == null) return NodeTypeByHavingChild.NO_CHILDREN;
+        if (node.left == null) return NodeTypeByHavingChild.ONLY_RIGHT_CHILD;
+        if (node.right == null) return NodeTypeByHavingChild.ONLY_LEFT_CHILD;
+        return NodeTypeByHavingChild.TWO_CHILDREN;
+    }
+
+    private boolean isRoot(Node<K, V> node) {
+        return node == root;
+    }
+
+    private void doDelete(Triplet<K, V> triplet, Node<K, V> replacement) {
+        if (isRoot(triplet.current)) root = replacement;
+        else if (triplet.isLeft) triplet.parent.left = replacement;
+        else triplet.parent.right = replacement;
+    }
+
+    private class Triplet<K, V> {
+        Node<K, V> current;
+        Node<K, V> parent;
+        boolean isLeft;
+    }
+
+    private Triplet<K, V> findForDelete(K key) {
+        Triplet<K, V> triplet = new Triplet<>();
+        triplet.current = root;
+        triplet.parent = root;
+        triplet.isLeft = true;
+        int stateCompare;
+        while (!isNull(triplet.current) && (stateCompare = key.compareTo(triplet.current.key)) != 0) {
+            triplet.parent = triplet.current;
+            if (stateCompare < 0) {
+                triplet.current = triplet.current.left;
+                triplet.isLeft = true;
+            } else {
+                triplet.current = triplet.current.right;
+                triplet.isLeft = false;
+            }
+        }
+        return triplet;
+    }
+
     public boolean delete(K key) {
         if (isEmpty()) return false;
-        Node<K, V> current = root;
-        Node<K, V> parent = root;
-        int stateCompare;
-        boolean isLeft = true;
-        while (!isNull(current) && (stateCompare = key.compareTo(current.key)) != 0) {
-            parent = current;
-            if (stateCompare < 0) {
-                current = current.left;
-                isLeft = true;
-            } else {
-                current = current.right;
-                isLeft = false;
-            }
+        Triplet<K, V> triplet = findForDelete(key);
+        if (isNull(triplet.current)) return false;
+        NodeTypeByHavingChild type = defineType(triplet.current);
+        Node<K, V> replacement = null;
+        switch (type) {
+            case NO_CHILDREN:
+                break;
+            case ONLY_LEFT_CHILD:
+                replacement = triplet.current.left;
+                break;
+            case ONLY_RIGHT_CHILD:
+                replacement = triplet.current.right;
+                break;
+            case TWO_CHILDREN:
+                Node<K, V> node = findMinByKey(triplet.current.right);
+                delete(node.key);
+                node.right = triplet.current.right;
+                node.left = triplet.current.left;
+                replacement = node;
+                break;
         }
-        if (isNull(current)) return false;
-
-        //если нет потомков
-        if (current.left == null && current.right == null)
-            if (current == root) root = null;
-            else if (isLeft) parent.left = null;
-            else parent.right = null;
-
-        //если один потомок
-        if (current.left == null && current.right != null)
-            if (current == root) root = current.right;
-            else if (isLeft) parent.left = current.right;
-            else parent.right = current.right;
-        else if (current.left != null && current.right == null)
-            if (current == root) root = current.left;
-            else if (isLeft) parent.left = current.left;
-            else parent.right = current.left;
-
-        //если 2 потомка
-        if (current.left != null && current.right != null) {
-            Node<K, V> node = findMinByKey(current.right);
-            delete(node.key);
-            node.right = current.right;
-            node.left = current.left;
-            if (current == root) {
-                root = node;
-            } else if (isLeft) {
-                parent.left = node;
-            } else {
-                parent.right = node;
-            }
-        }
+        doDelete(triplet, replacement);
         return true;
     }
+
 
     private void traversePreOrder(Consumer<Node<K, V>> consumer, Node<K, V> current) {
         if (!isNull(current)) {
@@ -263,6 +289,15 @@ public class BinaryTree<K extends Comparable<K>, V extends Comparable<V>> {
 
             Scanner scanner = new Scanner(System.in);
             int key = -1;
+            System.out.println("Введите key");
+            System.out.print(">> ");
+            if (scanner.hasNextInt()) {
+                key = scanner.nextInt();
+            }
+            System.out.println(tree.rget(key).orElse(-1));
+            System.out.println();
+
+            key = -1;
             System.out.println("Введите key для удаления");
             System.out.print(">> ");
             if (scanner.hasNextInt()) {
