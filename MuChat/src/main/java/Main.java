@@ -11,8 +11,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        URL url = new File("src/main/java/by/babanin/view/loginPage.fxml").toURL();
-        Parent root = FXMLLoader.load(url);
+        //URL url = new File("src/main/java/by/babanin/view/loginPage.fxml").toURL();
+        Parent root = FXMLLoader.load(getClass().getResource("view/loginPage.fxml"));
         primaryStage.setTitle("MuChat");
         primaryStage.setScene(new Scene(root, 400, 700));
         primaryStage.show();

@@ -1,20 +1,23 @@
 package by.babanin.controllers;
 
 import java.io.*;
+
 import javafx.scene.control.TextArea;
+
 import java.net.InetAddress;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.StringJoiner;
 
-public class SimpleClient {
+public class Client {
+    private int port = 19999;
     private Socket socket;
     private PrintWriter writer;
     private BufferedReader reader;
 
-    public SimpleClient() {
+
+    public Client() {
         try {
-            int port = 19999;
             System.out.println("Try to open connection:" + port);
             socket = new Socket(InetAddress.getLocalHost(), port);
             System.out.println("Connection is created");
@@ -30,14 +33,12 @@ public class SimpleClient {
     }
 
     public String acceptMessage() {
-        StringJoiner joiner = new StringJoiner("\n", "Server", LocalDateTime.now().toString());
+        String str = null;
         try {
-            while (reader.ready()) {
-                joiner.add(reader.readLine());
-            }
+            str = reader.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return joiner.toString();
+        return str;
     }
 }

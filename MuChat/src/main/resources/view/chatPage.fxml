@@ -16,7 +16,7 @@
             <children>
             <ImageView fx:id="messageButton" fitHeight="31.0" fitWidth="31.0" layoutX="355.0" layoutY="526.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../img/message.png" />
+                  <Image url="@../../../../img/message.png" />
                </image>
             </ImageView>
             <TextField fx:id="messageField" layoutX="14.0" layoutY="526.0" prefHeight="31.0" prefWidth="333.0" />

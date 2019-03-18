@@ -1,4 +1,4 @@
-package by.babanin.view.animation;
+package by.babanin.animation;
 
 import javafx.animation.TranslateTransition;
 import javafx.scene.Node;

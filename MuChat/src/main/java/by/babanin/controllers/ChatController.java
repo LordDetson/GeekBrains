@@ -5,9 +5,18 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Formatter;
+import java.util.Locale;
+
 public class ChatController {
 
-    private SimpleClient client = new SimpleClient();
+    private Client client;
+    private Formatter formatter;
+    private String fmtString;
+    private Locale locale;
+    private DateTimeFormatter dateTimeFormatter;
 
     @FXML
     private TextField messageField;
@@ -20,33 +29,36 @@ public class ChatController {
 
     @FXML
     void initialize() {
-        messageButton.setOnMouseClicked(event -> {
-            String message = doMessage();
-            client.sendMessage(message);
-        });
+        client = new Client();
+        formatter = new Formatter();
+        fmtString = "Server : %s %s";
+        locale = new Locale("ru", "RU");
+        dateTimeFormatter = DateTimeFormatter.ofPattern("dd.LL.yy HH:mm:ss", locale);
 
-        messageField.setOnAction(event -> {
-            String message = doMessage();
-            client.sendMessage(message);
-        });
+        messageButton.setOnMouseClicked(event -> doMessage());
+        messageField.setOnAction(event -> doMessage());
+
         initReceiver();
     }
 
-    private String doMessage() {
+    private void doMessage() {
         String message;
         if (!(message = messageField.getText().trim()).isEmpty()) {
             chatArea.appendText(message + "\n\n\r");
             messageField.setText("");
+            client.sendMessage(message);
         }
-        return message;
     }
 
     private void initReceiver() {
         System.out.println();
         Thread thread = new Thread(() -> {
+            String echoMessage;
             while (true) {
-                String echoMessage = client.acceptMessage();
-                chatArea.appendText(echoMessage + "\n\n\r");
+                echoMessage = client.acceptMessage();
+                LocalDateTime dateTime = LocalDateTime.now();
+                formatter.format(fmtString, echoMessage, dateTime.format(dateTimeFormatter));
+                chatArea.appendText(formatter + "\n\n\r");
             }
         });
         thread.setDaemon(true);

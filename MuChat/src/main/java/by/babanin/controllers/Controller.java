@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 
 import by.babanin.dao.DBHandler;
 import by.babanin.entity.User;
-import by.babanin.view.animation.Shake;
+import by.babanin.animation.Shake;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,7 +47,7 @@ public class Controller {
             String password = passwordField.getText();
             if (!login.isEmpty() && !password.isEmpty()) {
                 if (loginUser(login, password)) {
-                    openPage("src/main/java/by/babanin/view/chatPage.fxml");
+                    openPage("/view/chatPage.fxml");
                 } else {
                     Shake loginFieldNotCorrectAnimation = new Shake(loginField);
                     Shake passwordFieldNotCorrectAnimation = new Shake(passwordField);
@@ -61,7 +61,7 @@ public class Controller {
         });
 
         registrationButton.setOnAction(event -> {
-            openPage("src/main/java/by/babanin/view/registrationPage.fxml");
+            openPage("/view/registrationPage.fxml");
         });
     }
 
@@ -77,13 +77,7 @@ public class Controller {
         registrationButton.getScene().getWindow().hide();
 
         FXMLLoader loader = new FXMLLoader();
-        URL url = null;
-        try {
-            url = new File(pagePath).toURL();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        loader.setLocation(url);
+        loader.setLocation(getClass().getResource(pagePath));
         try {
             loader.load();
         } catch (IOException e) {
