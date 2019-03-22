@@ -3,11 +3,7 @@ package by.babanin.controllers;
 import by.babanin.dao.DBHandler;
 import by.babanin.entity.User;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 
 public class RegistrationController {
 

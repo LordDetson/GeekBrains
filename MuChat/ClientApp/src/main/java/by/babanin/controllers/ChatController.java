@@ -1,5 +1,7 @@
 package by.babanin.controllers;
 
+import by.babanin.entity.Client;
+import by.babanin.entity.Message;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -29,36 +31,44 @@ public class ChatController {
 
     @FXML
     void initialize() {
-        client = new Client();
+        client = new Client(Controller.getLogedUser());
         formatter = new Formatter();
-        fmtString = "Server : %s %s";
+        fmtString = "%s%s:\n%s\n%s\n\n\r";
         locale = new Locale("ru", "RU");
         dateTimeFormatter = DateTimeFormatter.ofPattern("dd.LL.yy HH:mm:ss", locale);
 
-        messageButton.setOnMouseClicked(event -> doMessage());
-        messageField.setOnAction(event -> doMessage());
+        messageButton.setOnMouseClicked(event -> sendMessage());
+        messageField.setOnAction(event -> sendMessage());
 
         initReceiver();
     }
 
-    private void doMessage() {
+    private void sendMessage() {
         String message;
         if (!(message = messageField.getText().trim()).isEmpty()) {
-            chatArea.appendText(message + "\n\n\r");
+            Message mes;
+            if ((mes = Message.parse(message, client.getUser())) != null) {
+                client.sendMessage(mes);
+                /*LocalDateTime dateTime = LocalDateTime.now();
+                formatter.format(fmtString, Message.isAll(mes) ? "" : "[/w] ", mes.getFrom(),
+                        mes.getMessage(),
+                        dateTime.format(dateTimeFormatter));
+                chatArea.appendText(formatter.toString());*/
+            }
             messageField.setText("");
-            client.sendMessage(message);
         }
     }
 
     private void initReceiver() {
         System.out.println();
         Thread thread = new Thread(() -> {
-            String echoMessage;
+            Message message;
             while (true) {
-                echoMessage = client.acceptMessage();
+                message = client.acceptMessage();
                 LocalDateTime dateTime = LocalDateTime.now();
-                formatter.format(fmtString, echoMessage, dateTime.format(dateTimeFormatter));
-                chatArea.appendText(formatter + "\n\n\r");
+                formatter.format(fmtString, Message.isAll(message) ? "" : "[/w] ", message.getFrom(),
+                        message.getMessage(), dateTime.format(dateTimeFormatter));
+                chatArea.appendText(formatter.toString());
             }
         });
         thread.setDaemon(true);

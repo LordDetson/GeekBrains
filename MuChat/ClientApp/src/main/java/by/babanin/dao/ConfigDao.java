@@ -3,6 +3,8 @@ package by.babanin.dao;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Properties;
 import java.util.StringJoiner;
 
@@ -22,7 +24,12 @@ public class ConfigDao {
     }
 
     private ConfigDao(String pathProperty) {
-        File config = new File(pathProperty);
+        File config = null;
+        try {
+            config = new File(getClass().getResource(pathProperty).toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         Properties properties = new Properties();
         try (FileInputStream fis = new FileInputStream(config)){
             properties.load(fis);

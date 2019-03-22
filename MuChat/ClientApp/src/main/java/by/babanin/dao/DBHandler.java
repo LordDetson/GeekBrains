@@ -2,9 +2,9 @@ package by.babanin.dao;
 
 import by.babanin.entity.User;
 
-import static by.babanin.dao.ConstantDao.*;
-
 import java.sql.*;
+
+import static by.babanin.dao.ConstantDao.*;
 
 public class DBHandler {
     private ConfigDao config = ConfigDao.getInstance();
@@ -50,6 +50,28 @@ public class DBHandler {
             PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_LOGIN_AND_PASSWORD);
             statement.setString(1, login);
             statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                user = new User(
+                        resultSet.getInt(USER_ID),
+                        resultSet.getString(USER_FIRST_NAME),
+                        resultSet.getString(USER_LAST_NAME),
+                        resultSet.getString(USER_LOGIN),
+                        resultSet.getString(USER_PASSWORD),
+                        resultSet.getString(USER_GENDER)
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public User getUser(String login) {
+        User user = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_LOGIN);
+            statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 user = new User(

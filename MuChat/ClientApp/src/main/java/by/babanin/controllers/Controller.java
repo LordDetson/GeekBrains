@@ -1,13 +1,8 @@
 package by.babanin.controllers;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
+import by.babanin.animation.Shake;
 import by.babanin.dao.DBHandler;
 import by.babanin.entity.User;
-import by.babanin.animation.Shake;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,9 +12,13 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 public class Controller {
 
-    User logedUser;
+    private static User logedUser;
 
     @FXML
     private ResourceBundle resources;
@@ -41,7 +40,6 @@ public class Controller {
 
     @FXML
     void initialize() {
-
         loginButton.setOnAction(event -> {
             String login = loginField.getText().trim();
             String password = passwordField.getText();
@@ -88,5 +86,9 @@ public class Controller {
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.showAndWait();
+    }
+
+    public static User getLogedUser() {
+        return logedUser;
     }
 }
