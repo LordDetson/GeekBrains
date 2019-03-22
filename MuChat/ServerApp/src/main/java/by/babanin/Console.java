@@ -1,4 +1,6 @@
-package by.babanin.server;
+package by.babanin;
+
+import by.babanin.entity.Message;
 
 import java.io.BufferedInputStream;
 import java.time.LocalDateTime;
@@ -14,10 +16,10 @@ public class Console {
     private Locale locale;
     private DateTimeFormatter dateTimeFormatter;
 
-    public Console(String clientName) {
+    public Console() {
         scanner = new Scanner(new BufferedInputStream(System.in));
         formatter = new Formatter();
-        fmtString = clientName + ": %s %s";
+        fmtString = "%s%s: %s %s\n\n\r";
         locale = new Locale("ru", "RU");
         dateTimeFormatter = DateTimeFormatter.ofPattern("dd.LL.yy HH:mm:ss", locale);
     }
@@ -26,9 +28,11 @@ public class Console {
         return scanner.nextLine();
     }
 
-    public void write(String str) {
+    public void write(Message message) {
         LocalDateTime dateTime = LocalDateTime.now();
-        formatter.format(fmtString, str, dateTime.format(dateTimeFormatter));
+        formatter.format(fmtString, Message.isAll(message) ? "" : "[/w] ", message.getFrom(),
+                message.getMessage(),
+                dateTime.format(dateTimeFormatter));
         System.out.println(formatter);
     }
 }
