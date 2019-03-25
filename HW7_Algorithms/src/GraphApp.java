@@ -23,6 +23,6 @@ public class GraphApp {
         graph.displayBfs();
         System.out.println();
 
-        graph.displayPath(graph.bfs(0,5));
+        graph.displayPath(graph.bfs(0,7));
     }
 }

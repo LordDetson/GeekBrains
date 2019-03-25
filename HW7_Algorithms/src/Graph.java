@@ -82,26 +82,29 @@ public class Graph {
         LinkedList<Integer> path = new LinkedList<>();
         Queue<Integer> queue = new LinkedList<>();
         visitVertex(startIndex, queue);
-        boolean isFind;
+        boolean isFind = false;
         int v2;
         while (!queue.isEmpty()) {
-            isFind = false;
             int v1 = queue.remove();
-            path.add(v1);
             while ((v2 = getAdjUnvisitedVertex(v1)) != -1) {
                 visitVertex(v2, queue);
-                path.add(v2);
+                vertexList[v2].previus = v1;
                 if (v2 == finishIndex) {
+                    path.add(v2);
                     isFind = true;
                     break;
-                } else {
-                    path.removeLast();
                 }
             }
             if (isFind) {
                 break;
             }
         }
+        int buf = path.getLast();
+        while (vertexList[buf].previus != -1) {
+            path.add(vertexList[buf].previus);
+            buf = path.getLast();
+        }
+        Collections.reverse(path);
         resetWasVisited();
         return path;
     }
